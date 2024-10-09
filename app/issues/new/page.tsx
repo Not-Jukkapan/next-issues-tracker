@@ -1,22 +1,24 @@
 'use client'
-import { Button, Callout, TextField, Text } from '@radix-ui/themes'
-import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
-import axios from 'axios';
-import { useForm, Controller } from 'react-hook-form'
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createIssueSchema } from '@/app/validationSchema';
-import { z } from 'zod'
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import delay from 'delay';
+import { createIssueSchema } from '@/app/validationSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Callout, TextField } from '@radix-ui/themes';
+import axios from 'axios';
+import "easymde/dist/easymde.min.css";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+// import SimpleMDE from "react-simplemde-editor";
+import { z } from 'zod';
+import dynamic from 'next/dynamic';
 
+const SimpleMDE = dynamic(
+    () => import('react-simplemde-editor'), { ssr: false });
 
 type IssueForm = z.infer<typeof createIssueSchema>
 
-const NewIssuePage =async () => {
+const NewIssuePage =  () => {
     const router = useRouter();
     const { register, control, handleSubmit, formState: {
         errors
@@ -38,7 +40,6 @@ const NewIssuePage =async () => {
         }
     }
     )
-    await delay(1000)
 
     return (
         <div className='max-w-xl' >
@@ -51,7 +52,8 @@ const NewIssuePage =async () => {
             <form className='space-y-3' onSubmit={onSubmit}>
                 <TextField.Root placeholder="Title"  {...register('title')} />
                 <ErrorMessage>{errors.title?.message}</ErrorMessage>
-                <Controller name='description' control={control} render={({ field }) => <SimpleMDE placeholder='Description...' {...field} />} />
+                <Controller name='description' control={control} 
+                    render={({ field }) => <SimpleMDE placeholder='Description...' {...field} />} />
                 <ErrorMessage>{errors.description?.message}</ErrorMessage>
                 <Button disabled={isSubmitting}>Submit new issue {isSubmitting && <Spinner />} </Button>
 

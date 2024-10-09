@@ -18,8 +18,9 @@ const NavBar = () => {
             <Link href="/">
                 <AiFillBug /> </Link>
             <ul className='flex space-x-6'>
-                {links.map((link) => (
+                {links.map((link, index) => (
                     <li><Link
+                        key={index}
                         className=
                         {classnames({
                             'text-zinc-900:': currentPath === link.href,

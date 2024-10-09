@@ -19,7 +19,6 @@ const NewIssuePage = () => {
     return (
         <div className='max-w-xl' >
             {error && <Callout.Root color='red'>
-
                 <Callout.Text>
                     {error}
                 </Callout.Text>
@@ -37,7 +36,6 @@ const NewIssuePage = () => {
             )}>
                 <TextField.Root placeholder="Title"  {...register('title')} />
                 <Controller name='description' control={control} render={({ field }) => <SimpleMDE placeholder='Description...' {...field} />} />
-
                 <Button>Submit new issue</Button>
 
             </form >
